@@ -4,11 +4,14 @@ import com.sicr.train.data.StudentRepository;
 import com.sicr.train.data.entity.Student;
 import com.sicr.train.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
@@ -17,7 +20,11 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student create(Student student) {
-        return studentRepository.save(student);
+        try {
+            return studentRepository.save(student);
+        } catch (Exception ex) {
+            throw new RuntimeException("ไม่สามารถสร้างข้อมูลนักเรียนได้: " + ex.getMessage(), ex);
+        }
     }
 
     @Override
